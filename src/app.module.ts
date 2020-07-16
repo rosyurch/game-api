@@ -5,14 +5,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { Connection } from 'typeorm';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
             type: 'sqlite',
-            database: '../data/database.db',
+            database: '../data/db.sqlite',
             entities: [User],
             synchronize: true,
+            logging: true,
         }),
         UserModule,
         AuthModule,
@@ -20,4 +22,6 @@ import { AuthModule } from './auth/auth.module';
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+    constructor(private readonly connection: Connection) {}
+}
