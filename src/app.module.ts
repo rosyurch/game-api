@@ -6,12 +6,15 @@ import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { Connection } from 'typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRoot({
-            type: 'sqlite',
-            database: '../data/db.sqlite',
+            type: 'postgres',
+            url: process.env.DATABASE_URL,
+            ssl: { rejectUnauthorized: false },
             entities: [User],
             synchronize: true,
             logging: true,

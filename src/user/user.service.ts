@@ -14,4 +14,8 @@ export class UserService {
     create(userData: UserDto): Promise<UserRO> {
         return this.userRepository.save(userData);
     }
+
+    getAll(): Promise<UserRO[]> {
+        return this.userRepository.find();
+    }
 }
