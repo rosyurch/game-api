@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
+import { Game } from './game/game.entity';
 import { AuthModule } from './auth/auth.module';
 import { Connection } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { GameModule } from './game/game.module';
 
 @Module({
     imports: [
@@ -15,12 +17,13 @@ import { ConfigModule } from '@nestjs/config';
             type: 'postgres',
             url: process.env.DATABASE_URL,
             ssl: { rejectUnauthorized: false },
-            entities: [User],
+            entities: [User, Game],
             synchronize: true,
             logging: true,
         }),
         UserModule,
         AuthModule,
+        GameModule,
     ],
     controllers: [AppController],
     providers: [AppService],
