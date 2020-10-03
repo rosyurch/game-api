@@ -1,17 +1,36 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    ManyToMany,
+    OneToMany,
+} from 'typeorm';
+import { Game } from '../game/game.entity';
 
 @Entity()
-@Unique(['email'])
 export class User {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({ unique: true })
     email!: string;
 
-    @Column()
+    @Column({ nullable: true })
     name!: string;
 
     @Column()
     password!: string;
+
+    @OneToMany(
+        type => Game,
+        game => game.host,
+    )
+    hostedGames!: Game[];
+
+    //
+    @ManyToMany(
+        type => Game,
+        game => game.players,
+    )
+    games!: Game[];
 }

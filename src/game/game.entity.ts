@@ -1,5 +1,12 @@
-import { UserRO } from 'src/user/user.interface';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/user.entity';
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Game {
@@ -9,10 +16,21 @@ export class Game {
     @Column()
     title!: string;
 
-    @Column()
-    host!: UserRO;
+    @ManyToOne(
+        type => User,
+        user => user.hostedGames,
+    )
+    host!: User;
 
-    // change to smth like {...UserRO, onetimeName:string }
     @Column()
-    participants!: UserRO[];
+    structure!: number[];
+
+    @ManyToMany(
+        type => User,
+        player => player.games,
+    )
+    @JoinTable()
+    players!: User[];
+
+    // TD add question entity(many-to-one)
 }
